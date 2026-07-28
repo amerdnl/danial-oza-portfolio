@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en-MY">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!--
+      The English metadata below is what search engines and link previews see.
+      When a visitor switches to Bahasa Melayu, the title, description, and
+      <html lang> are updated at runtime by src/i18n/LanguageContext.jsx.
+    -->
+    <title>Danial Oza | Life Advisor and Takaful Consultation Malaysia</title>
+    <meta
+      name="description"
+      content="Get personalised takaful guidance from Danial Oza, a registered AIA PUBLIC Takaful Life Advisor serving clients throughout Malaysia through physical and online consultations."
+    />
+    <meta name="author" content="Danial Oza" />
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#000000" />
+
+    <!--
+      Theme, applied before first paint so the page never flashes the wrong
+      colour. Deliberately blocking and inline: it must run before the body
+      renders. Mirrors resolveInitialTheme() in src/context/themeContextValue.js
+      — saved preference, then system preference, then dark.
+    -->
+    <script>
+      (function () {
+        try {
+          var stored = localStorage.getItem('danial-oza-theme')
+          var theme =
+            stored === 'light' || stored === 'dark'
+              ? stored
+              : window.matchMedia('(prefers-color-scheme: light)').matches
+                ? 'light'
+                : 'dark'
+          document.documentElement.setAttribute('data-theme', theme)
+          if (theme === 'light') {
+            var meta = document.querySelector('meta[name="theme-color"]')
+            if (meta) meta.setAttribute('content', '#FFF9F9')
+          }
+        } catch (e) {
+          document.documentElement.setAttribute('data-theme', 'dark')
+        }
+      })()
+    </script>
+
+    <!-- PLACEHOLDER — replace www.example.com with the live domain once deployed. -->
+    <link rel="canonical" href="https://www.example.com/" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="profile" />
+    <meta property="og:locale" content="en_MY" />
+    <meta property="og:locale:alternate" content="ms_MY" />
+    <meta property="og:site_name" content="Danial Oza — Life Advisor" />
+    <meta
+      property="og:title"
+      content="Danial Oza | Life Advisor and Takaful Consultation Malaysia"
+    />
+    <meta
+      property="og:description"
+      content="Personalised takaful guidance from a registered AIA PUBLIC Takaful Life Advisor. Free consultation, nationwide, physical or online."
+    />
+    <meta property="og:url" content="https://www.example.com/" />
+    <!-- PLACEHOLDER — replace public/og-image.png with a real 1200x630 preview image. -->
+    <meta property="og:image" content="https://www.example.com/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="Danial Oza, Life Advisor with AIA PUBLIC Takaful Berhad"
+    />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Danial Oza | Life Advisor and Takaful Consultation Malaysia"
+    />
+    <meta
+      name="twitter:description"
+      content="Personalised takaful guidance from a registered AIA PUBLIC Takaful Life Advisor. Free consultation, nationwide, physical or online."
+    />
+    <meta name="twitter:image" content="https://www.example.com/og-image.png" />
+
+    <!-- Icons -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/images/danial-oza.jpg" />
+
+    <!--
+      Structured data.
+      Person + ProfessionalService only. No rating or review schema is
+      included — there is no verified review data to support it.
+    -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Person",
+            "@id": "https://www.example.com/#danial-oza",
+            "name": "Danial Oza",
+            "jobTitle": "Life Advisor",
+            "description": "Registered AIA PUBLIC Takaful Life Advisor helping individuals and families across Malaysia understand their takaful protection options.",
+            "image": "https://www.example.com/images/danial-oza.jpg",
+            "url": "https://www.example.com/",
+            "email": "mailto:danial.7615y@aia-premier.com.my",
+            "telephone": "+60199801317",
+            "knowsLanguage": ["ms-MY", "en-MY"],
+            "worksFor": {
+              "@type": "Organization",
+              "name": "AIA PUBLIC Takaful Berhad"
+            },
+            "sameAs": [
+              "https://www.instagram.com/brooldet",
+              "https://www.facebook.com/share/1BbVsTSDbK/",
+              "https://www.linkedin.com/in/danial-ozarizan-1950a7368",
+              "https://www.tiktok.com/@danialoza"
+            ]
+          },
+          {
+            "@type": "ProfessionalService",
+            "@id": "https://www.example.com/#service",
+            "name": "Danial Oza — Takaful Consultation",
+            "description": "Free takaful consultation covering medical card, life takaful, critical illness protection, income protection, family protection, and savings and legacy planning. Available physically and online.",
+            "url": "https://www.example.com/",
+            "telephone": "+60199801317",
+            "email": "mailto:danial.7615y@aia-premier.com.my",
+            "image": "https://www.example.com/images/danial-oza.jpg",
+            "provider": { "@id": "https://www.example.com/#danial-oza" },
+            "availableLanguage": ["ms-MY", "en-MY"],
+            "areaServed": {
+              "@type": "Country",
+              "name": "Malaysia"
+            },
+            "address": {
+              "@type": "PostalAddress",
+              "addressCountry": "MY"
+            },
+            "hasOfferCatalog": {
+              "@type": "OfferCatalog",
+              "name": "Takaful protection areas",
+              "itemListElement": [
+                { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Medical Card" } },
+                { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Life Takaful" } },
+                {
+                  "@type": "Offer",
+                  "itemOffered": { "@type": "Service", "name": "Critical Illness Protection" }
+                },
+                {
+                  "@type": "Offer",
+                  "itemOffered": { "@type": "Service", "name": "Income Protection" }
+                },
+                {
+                  "@type": "Offer",
+                  "itemOffered": { "@type": "Service", "name": "Family Protection" }
+                },
+                {
+                  "@type": "Offer",
+                  "itemOffered": { "@type": "Service", "name": "Savings and Legacy Planning" }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

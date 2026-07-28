@@ -1,0 +1,12 @@
+# Netlify SPA fallback.
+#
+# This is a single-page application: React Router owns /about, /services and
+# the rest on the client. Without this rule, loading one of those URLs
+# directly (or refreshing on one) would return a 404 from Netlify, because no
+# file exists at that path.
+#
+# Real files — /assets/*, /images/*, /favicon.svg, /robots.txt — are matched
+# and served before this rule applies, so asset loading is unaffected.
+#
+# The 200 (rather than a redirect) keeps the URL in the address bar intact.
+/*  /index.html  200
