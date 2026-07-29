@@ -15,10 +15,10 @@ export function PageHeader({ title, intro, children }) {
 
   return (
     <header className="border-b border-border bg-section">
-      <div className="container-page py-12 sm:py-16">
+      <div className="container-page pb-12 pt-28 sm:pb-16 sm:pt-32">
         {/* Breadcrumb */}
         <nav aria-label={t(nav.breadcrumb)} className="mb-5">
-          <ol className="flex items-center gap-1.5 text-sm text-muted">
+          <ol className="flex flex-wrap items-center gap-1.5 text-sm text-muted">
             <li>
               <Link to="/" className="transition-colors hover:text-heading">
                 {t(nav.home)}
@@ -27,7 +27,7 @@ export function PageHeader({ title, intro, children }) {
             <li aria-hidden="true" className="flex items-center">
               <ChevronRight className="size-4" />
             </li>
-            <li className="font-medium text-heading" aria-current="page">
+            <li className="min-w-0 break-words font-medium text-heading" aria-current="page">
               {title}
             </li>
           </ol>

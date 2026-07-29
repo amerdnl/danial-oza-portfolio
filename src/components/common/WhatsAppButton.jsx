@@ -33,7 +33,9 @@ export function WhatsAppButton() {
       target="_blank"
       rel="noopener noreferrer"
       aria-label={label}
-      className={`bg-cta-gradient text-on-accent fixed bottom-5 right-5 z-40 inline-flex items-center gap-2 rounded-full px-4 py-3 font-semibold shadow-lg shadow-black/40 transition-all duration-300 hover:brightness-110 sm:bottom-7 sm:right-7 ${
+      aria-hidden={visible ? undefined : true}
+      tabIndex={visible ? undefined : -1}
+      className={`bg-cta-gradient text-on-accent fixed bottom-[calc(1.25rem+env(safe-area-inset-bottom))] right-[calc(1.25rem+env(safe-area-inset-right))] z-40 inline-flex items-center gap-2 rounded-full px-4 py-3 font-semibold shadow-lg shadow-black/40 transition-all duration-300 hover:brightness-110 sm:bottom-7 sm:right-7 ${
         visible ? 'translate-y-0 opacity-100' : 'pointer-events-none translate-y-4 opacity-0'
       }`}
     >

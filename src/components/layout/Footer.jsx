@@ -20,7 +20,7 @@ export function Footer() {
 
   return (
     <footer className="border-t border-border bg-page">
-      <div className="container-page py-14">
+      <div className="container-page pb-24 pt-14">
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
           {/* Identity */}
           <div className="lg:col-span-1">

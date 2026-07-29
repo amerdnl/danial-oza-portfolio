@@ -83,7 +83,10 @@ export function MobileNav({ open, onClose, toggleRef, id = 'mobile-menu' }) {
       id={id}
       ref={panelRef}
       hidden={!open}
-      className="bg-overlay-strong border-t border-border backdrop-blur-md xl:hidden"
+      role="dialog"
+      aria-modal="true"
+      aria-label={t(nav.primaryNavigation)}
+      className="bg-overlay-strong fixed inset-x-0 bottom-0 top-20 overflow-y-auto overscroll-contain border-t border-border pb-[env(safe-area-inset-bottom)] backdrop-blur-md xl:hidden"
     >
       <nav aria-label={t(nav.primaryNavigation)} className="container-page py-4">
         <ul className="flex flex-col gap-1">

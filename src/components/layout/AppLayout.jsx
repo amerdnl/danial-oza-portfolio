@@ -31,7 +31,7 @@ export function AppLayout() {
 
       <Navbar />
 
-      <main id="main">
+      <main id="main" tabIndex={-1}>
         <div key={pathname} className="animate-route">
           <Outlet />
         </div>

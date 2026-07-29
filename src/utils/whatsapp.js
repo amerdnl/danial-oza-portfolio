@@ -149,6 +149,7 @@ export function contactMessageUrl(lang = 'en', details = {}) {
   const rows = [
     [labels.name, details.name],
     [labels.phone, details.phone],
+    [labels.preferredContact, details.preferredContact],
     [labels.interest, details.interest],
     [labels.message, details.message],
   ].filter(([, value]) => value)
@@ -170,6 +171,7 @@ export function contactMailtoUrl(lang = 'en', details = {}) {
     [labels.name, details.name],
     [labels.phone, details.phone],
     ['Email', details.email],
+    [labels.preferredContact, details.preferredContact],
     [labels.interest, details.interest],
   ].filter(([, value]) => value)
 

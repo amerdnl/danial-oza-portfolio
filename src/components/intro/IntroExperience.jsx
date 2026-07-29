@@ -42,7 +42,7 @@ export function IntroExperience({ state, progress, isBlocking }) {
 
   return (
     <div
-      className={`intro-overlay fixed inset-0 z-[999] flex items-center justify-center overflow-hidden transition-opacity duration-700 ${
+      className={`intro-overlay fixed inset-0 z-[100] flex items-center justify-center overflow-hidden transition-opacity duration-700 ${
         exiting ? 'pointer-events-none opacity-0' : 'opacity-100'
       }`}
     >

@@ -322,6 +322,8 @@
   .input {
     display: block;
     width: 100%;
+    min-width: 0;
+    max-width: 100%;
     min-height: 2.875rem;
     padding: 0.7rem 0.9rem;
     background-color: var(--ui-input-bg);
@@ -410,7 +412,7 @@
     position: absolute;
     left: 1rem;
     top: -6rem;
-    z-index: 100;
+    z-index: 60;
     padding: 0.75rem 1.25rem;
     background-color: var(--color-accent);
     color: var(--color-on-accent);

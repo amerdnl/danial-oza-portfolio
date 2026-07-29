@@ -59,7 +59,11 @@ export function Contact({ showHeading = true }) {
 
   const update = (field, value) => {
     setValues((previous) => ({ ...previous, [field]: value }))
-    setErrors((previous) => ({ ...previous, [field]: undefined }))
+    setErrors((previous) => ({
+      ...previous,
+      [field]: undefined,
+      ...(field === 'method' && value !== 'email' ? { email: undefined } : {}),
+    }))
   }
 
   const handleSubmit = (event) => {
@@ -85,10 +89,12 @@ export function Contact({ showHeading = true }) {
     }
 
     const service = services.find((item) => item.id === values.interest)
+    const contactMethod = CONTACT_METHODS.find((item) => item.value === values.method)
     const details = {
       name: sanitizeText(values.name),
       phone: sanitizeText(values.phone),
       email: sanitizeText(values.email),
+      preferredContact: contactMethod ? t(contactMethod.label) : values.method,
       interest: service ? t(service.title) : values.interest,
       message: sanitizeText(values.message),
     }

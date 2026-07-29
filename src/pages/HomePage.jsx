@@ -46,7 +46,7 @@ export function HomePage() {
       {/* Closing call to action */}
       <section className="section">
         <div className="container-page">
-          <div className="card card-hover mx-auto max-w-3xl text-center">
+          <div className="card mx-auto max-w-3xl text-center">
             <h2 className="text-h2">{t(previews.finalCta.heading)}</h2>
             <p className="text-lead mt-4 text-muted">{t(previews.finalCta.body)}</p>
 
