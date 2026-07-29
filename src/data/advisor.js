@@ -96,7 +96,7 @@ export const advisor = {
   /**
    * Profile photo.
    *
-   * TO REPLACE: put a SQUARE image at `public/images/danial-oza.jpg`, around
+   * TO REPLACE: put a SQUARE image at `public/images/danial-oza.webp`, around
    * 1000x1000px, and keep it under ~400 KB. It is the hero image and loads
    * with high priority, so an oversized file directly delays the page.
    *
@@ -107,7 +107,7 @@ export const advisor = {
    * The full-resolution original is kept outside the build at
    * `design-assets/danial-oza-original.jpg` — re-crop from there if needed.
    */
-  profileImage: "/images/danial-oza.jpg",
+  profileImage: "/images/danial-oza.webp",
   profileImageWidth: 1000,
   profileImageHeight: 1000,
 

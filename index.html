@@ -23,6 +23,77 @@
     <meta name="theme-color" content="#FFF9F9" />
     <meta name="color-scheme" content="light" />
 
+    <!--
+      Critical pre-React shell. It paints before the module graph and global
+      stylesheet load, then React replaces it with the animated intro.
+    -->
+    <style>
+      html,
+      body,
+      #root {
+        min-height: 100%;
+        margin: 0;
+        background: #fff9f9;
+      }
+
+      .initial-loader {
+        position: fixed;
+        inset: 0;
+        z-index: 999;
+        display: flex;
+        min-height: 100vh;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        background: linear-gradient(135deg, #fff9f9 0%, #f8eded 45%, #f0d9d9 100%);
+        color: #231f20;
+        font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+      }
+
+      .initial-loader__content {
+        width: 100%;
+        max-width: 28rem;
+        padding: 0 1.5rem;
+        text-align: center;
+      }
+
+      .initial-loader__brand {
+        margin: 0;
+        font-size: 1.5rem;
+        font-weight: 800;
+        letter-spacing: -0.025em;
+      }
+
+      .initial-loader__title {
+        margin: 0.5rem 0 0;
+        color: #6f6262;
+        font-size: 0.75rem;
+        font-weight: 500;
+        letter-spacing: 0.28em;
+        text-transform: uppercase;
+      }
+
+      .initial-loader__line {
+        height: 1px;
+        margin-top: 2.25rem;
+        overflow: hidden;
+        border-radius: 9999px;
+        background: #dccaca;
+      }
+
+      .initial-loader__line::after {
+        display: block;
+        width: 35%;
+        height: 100%;
+        border-radius: inherit;
+        background: #950101;
+        content: "";
+      }
+    </style>
+
+    <link rel="preload" as="image" href="/images/danial-oza.webp" fetchpriority="high" />
+
     <!-- PLACEHOLDER — replace www.example.com with the live domain once deployed. -->
     <link rel="canonical" href="https://www.example.com/" />
 
@@ -80,7 +151,7 @@
             "name": "Danial Oza",
             "jobTitle": "Life Advisor",
             "description": "Registered AIA PUBLIC Takaful Life Advisor helping individuals and families across Malaysia understand their takaful protection options.",
-            "image": "https://www.example.com/images/danial-oza.jpg",
+            "image": "https://www.example.com/images/danial-oza.webp",
             "url": "https://www.example.com/",
             "email": "mailto:danial.7615y@aia-premier.com.my",
             "telephone": "+60199801317",
@@ -104,7 +175,7 @@
             "url": "https://www.example.com/",
             "telephone": "+60199801317",
             "email": "mailto:danial.7615y@aia-premier.com.my",
-            "image": "https://www.example.com/images/danial-oza.jpg",
+            "image": "https://www.example.com/images/danial-oza.webp",
             "provider": { "@id": "https://www.example.com/#danial-oza" },
             "availableLanguage": ["ms-MY", "en-MY"],
             "areaServed": {
@@ -145,7 +216,19 @@
     </script>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <div
+        class="initial-loader"
+        role="status"
+        aria-label="Loading Danial Oza's portfolio"
+      >
+        <div class="initial-loader__content">
+          <p class="initial-loader__brand">Danial Oza</p>
+          <p class="initial-loader__title">Life Advisor</p>
+          <div class="initial-loader__line" aria-hidden="true"></div>
+        </div>
+      </div>
+    </div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

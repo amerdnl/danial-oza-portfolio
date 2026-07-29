@@ -126,6 +126,7 @@ export function Hero() {
                 width={advisor.profileImageWidth}
                 height={advisor.profileImageHeight}
                 alt={t(hero.photoAlt)}
+                loading="eager"
                 fetchPriority="high"
                 decoding="async"
                 className="aspect-square w-full object-cover"
