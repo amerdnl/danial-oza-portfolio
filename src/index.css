@@ -627,6 +627,32 @@
     background-color: var(--t-hover-tint);
   }
 
+  /* ------------------------------------------------------------------
+     INTRO EXPERIENCE
+     The opening sequence is deliberately dark in BOTH themes, so it uses
+     the locked palette directly rather than the theme tokens. Every
+     animation here is neutralised by the reduced-motion block below.
+     ------------------------------------------------------------------ */
+  .intro-overlay {
+    background-image: linear-gradient(135deg, #000000 0%, #3d0000 70%, #000000 100%);
+    /* svh accounts for mobile browser chrome; vh is the fallback. */
+    min-height: 100vh;
+    min-height: 100svh;
+  }
+
+  @keyframes intro-fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  .intro-fade-in {
+    animation: intro-fade-in 0.7s ease both;
+  }
+
   /* Horizontal scroll-snap row used by the trust bar on small screens. */
   .snap-row {
     scroll-snap-type: x mandatory;

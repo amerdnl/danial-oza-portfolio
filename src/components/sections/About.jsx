@@ -18,13 +18,19 @@ import {
   Video,
 } from 'lucide-react'
 import { useLanguage } from '../../i18n/languageContextValue'
-import { hero, previews, sections } from '../../i18n/ui'
+import { previews, sections, stats as uiStats } from '../../i18n/ui'
 import { advisor } from '../../data/advisor'
+import useInView from '../../hooks/useInView'
 import SectionHeading from '../common/SectionHeading'
+import AnimatedStat from '../common/AnimatedStat'
 import Reveal from '../common/Reveal'
 
 export function About({ preview = false, showHeading = true }) {
   const { t } = useLanguage()
+
+  // Drives the statistics count-up. Fires once, then disconnects, so
+  // scrolling away and back does not restart the animation.
+  const [statsRef, statsInView] = useInView({ threshold: 0.25 })
 
   const facts = [
     { icon: BadgeCheck, label: { en: 'Qualification', ms: 'Kelayakan' }, value: t(advisor.qualification) },
@@ -43,54 +49,68 @@ export function About({ preview = false, showHeading = true }) {
     },
   ]
 
-  /* ---------------------------------------------------------------- preview */
+  /* ---------------------------------------------------------------- preview
+     A single centred column. The advisor photo used to sit in a left-hand
+     column here, but it is the same image the hero already shows further up
+     the page, so it has been removed and the layout collapsed to one column
+     rather than leaving an empty half. The photo itself is untouched and
+     still renders in the hero. */
   if (preview) {
-    const stats = [
-      { value: advisor.clientsHelped, label: { en: 'clients helped', ms: 'klien dibantu' } },
-      { value: t(advisor.experienceLabel), label: { en: 'experience', ms: 'pengalaman' } },
+    // Two numeric figures that count up, and one non-numeric fact that only
+    // fades in — "Free" has no number to animate.
+    const statItems = [
       {
-        value: t(advisor.consultationFee),
-        label: { en: 'consultation', ms: 'perundingan' },
+        id: 'clients-helped',
+        value: advisor.clientsHelpedValue,
+        suffix: advisor.clientsHelpedSuffix,
+        label: t(uiStats.clientsHelpedLabel),
+        ariaLabel: t(uiStats.clientsHelpedA11y),
+      },
+      {
+        id: 'experience',
+        value: advisor.experienceYears,
+        suffix: t(advisor.experienceSuffix),
+        label: t(uiStats.experienceLabel),
+        ariaLabel: t(uiStats.experienceA11y),
+      },
+      {
+        id: 'consultation',
+        text: t(advisor.consultationFee),
+        label: t(uiStats.consultationLabel),
+        ariaLabel: t(uiStats.consultationA11y),
       },
     ]
 
     return (
       <section id="about" className="section">
         <div className="container-page">
-          <div className="grid items-center gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-14">
+          <div className="mx-auto max-w-3xl">
             <Reveal>
-              <img
-                src={advisor.profileImage}
-                width={advisor.profileImageWidth}
-                height={advisor.profileImageHeight}
-                alt={t(hero.photoAlt)}
-                loading="lazy"
-                decoding="async"
-                className="aspect-square w-full rounded-3xl border border-border object-cover"
-              />
-            </Reveal>
-
-            <Reveal delay={0.05}>
               <p className="eyebrow mb-3">{t(sections.about.eyebrow)}</p>
               <h2 className="text-h2">{t(sections.about.heading)}</h2>
 
               <p className="text-lead mt-5 text-body">{t(advisor.bio.intro)}</p>
               <p className="text-small mt-4 text-muted">{t(advisor.bio.belief)}</p>
+            </Reveal>
 
-              <dl className="mt-7 grid grid-cols-3 gap-4">
-                {stats.map((stat) => (
-                  <div key={stat.label.en}>
-                    <dt className="sr-only">{t(stat.label)}</dt>
-                    <dd>
-                      <span className="block text-2xl font-extrabold text-accent">
-                        {stat.value}
-                      </span>
-                      <span className="text-xs text-muted">{t(stat.label)}</span>
-                    </dd>
-                  </div>
-                ))}
-              </dl>
+            {/* One observer on the grid drives all three cards, rather than
+                each card watching the viewport separately. */}
+            <dl ref={statsRef} className="mt-7 grid grid-cols-1 gap-4 sm:grid-cols-3">
+              {statItems.map((stat, index) => (
+                <AnimatedStat
+                  key={stat.id}
+                  value={stat.value}
+                  suffix={stat.suffix}
+                  text={stat.text}
+                  label={stat.label}
+                  ariaLabel={stat.ariaLabel}
+                  delay={index * 0.1}
+                  start={statsInView}
+                />
+              ))}
+            </dl>
 
+            <Reveal delay={0.05}>
               <p className="text-small mt-5 text-muted">
                 {advisor.languages.map((language) => t(language)).join(' · ')} ·{' '}
                 {t(advisor.location)}

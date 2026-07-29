@@ -66,7 +66,7 @@ This is a **single-page application**, not a multi-page site. There is one `inde
 | Path | Page component | Contents |
 |---|---|---|
 | `/` | `HomePage` | Overview — hero, trust bar, and short previews of every section |
-| `/about` | `AboutPage` | Biography, approach, client types, consultation process, testimonials |
+| `/about` | `AboutPage` | Biography, approach, client types, consultation process |
 | `/services` | `ServicesPage` | All six protection categories in full |
 | `/recommendation` | `RecommendationPage` | The questionnaire |
 | `/achievements` | `AchievementsPage` | Milestones, statistics, values |
@@ -190,33 +190,12 @@ Fill in **both** languages. If `ms` is missing the English is shown as a fallbac
 | The six protection categories and their considerations | `src/data/services.js` |
 | "Protection for Different Stages of Life" cards | `src/data/clientTypes.js` |
 | Professional milestones | `src/data/achievements.js` |
-| Client testimonials | `src/data/testimonials.js` |
 | FAQ questions and answers | `src/data/faqs.js` |
 | The five consultation steps | `src/data/process.js` |
 | "Why Choose Danial" points | `src/data/whyChooseMe.js` |
 | Questionnaire questions and options | `src/data/questionnaire.js` |
 | Buttons, navigation, form labels, error messages, disclaimers | `src/i18n/ui.js` |
 | Page title and meta description | `src/i18n/ui.js` (`seo`) **and** `index.html` |
-
-### Adding verified testimonials
-
-Open `src/data/testimonials.js`. The file currently holds three empty placeholders and full instructions at the top.
-
-A testimonial is only published when it has **both** `consent: true` **and** actual `quote` text. Anything else renders as a "Verified client testimonial will be added here" placeholder. This is a deliberate safety net — it makes it impossible to accidentally publish an invented quote.
-
-```js
-{
-  id: 'client-1',
-  initials: 'A.R.',                         // initials unless the client agreed to a full name
-  clientType: { en: 'Parent, Selangor', ms: 'Ibu bapa, Selangor' },
-  quote: {
-    en: "the client's own words, not rewritten",
-    ms: 'terjemahan, jika klien bersetuju',
-  },
-  image: null,                              // never use a stock photo for a real client
-  consent: true,                            // required
-}
-```
 
 ### Adding an icon
 
@@ -393,7 +372,6 @@ Then check every route loads directly on the live domain, not just from in-app n
 | **Profile photo** | `public/images/danial-oza.jpg` | Generated avatar silhouette in the brand colours. Replace with the real photo. |
 | **Open Graph image** | `public/og-image.png` | Plain 1200×630 gradient. Replace with a real link-preview image. |
 | **Favicon** | `public/favicon.svg` | Generic shield mark in the brand colours. |
-| **Testimonials** | `src/data/testimonials.js` | Three empty placeholders. No invented quotes anywhere on the site. |
 | **Domain** | `index.html`, `robots.txt`, `advisor.js` | `https://www.example.com` throughout. |
 | **Bahasa Melayu copy** | `src/i18n/ui.js`, `src/data/*` | Drafted during the build. Needs Danial's review — especially the disclaimers and WhatsApp messages. |
 

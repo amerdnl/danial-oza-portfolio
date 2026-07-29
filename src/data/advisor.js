@@ -30,9 +30,20 @@ export const advisor = {
   },
 
   // --- Practice details -----------------------------------------------------
+  //
+  // The same two facts are stored twice on purpose:
+  //   * the `*Label` / string forms are what most of the site displays
+  //   * the numeric forms feed the count-up animation in AnimatedStat, which
+  //     needs a real number to animate towards rather than a parsed string
+  //
+  // Keep the two in step when updating. Do not change the string forms to
+  // numbers — Hero, TrustBar, and AchievementsPage all render them directly.
   experienceYears: 2,
+  experienceSuffix: { en: ' years', ms: ' tahun' },
   experienceLabel: { en: '2 years', ms: '2 tahun' },
   clientsHelped: '80+',
+  clientsHelpedValue: 80,
+  clientsHelpedSuffix: '+',
   languages: [
     { en: 'Bahasa Melayu', ms: 'Bahasa Melayu' },
     { en: 'English', ms: 'Bahasa Inggeris' },

@@ -326,15 +326,6 @@ export const sections = {
       ms: 'Pengiktirafan dalaman yang diterima sepanjang tempoh saya bersama AIA PUBLIC Takaful Berhad.',
     },
   },
-  testimonials: {
-    eyebrow: { en: 'Client Feedback', ms: 'Maklum Balas Klien' },
-    heading: { en: 'What Clients Say', ms: 'Apa Kata Klien' },
-    intro: {
-      en: 'This section is reserved for verified client feedback shared with permission. Nothing here is invented.',
-      ms: 'Bahagian ini dikhaskan untuk maklum balas klien yang disahkan dan dikongsi dengan kebenaran. Tiada apa-apa di sini yang direka.',
-    },
-    placeholderBadge: { en: 'Placeholder', ms: 'Sementara' },
-  },
   faq: {
     eyebrow: { en: 'Questions', ms: 'Soalan' },
     heading: { en: 'Frequently Asked Questions', ms: 'Soalan Lazim' },
@@ -367,6 +358,46 @@ export const trustBar = {
   coverage: { en: 'Service coverage', ms: 'Liputan perkhidmatan' },
   languages: { en: 'Languages', ms: 'Bahasa' },
   consultationTypes: { en: 'Consultation options', ms: 'Pilihan perundingan' },
+}
+
+/**
+ * The opening experience — a brief loading screen shown once per browser
+ * session before the portfolio is revealed.
+ *
+ * Purely presentational: nothing here describes data being processed, and no
+ * technical or financial claims are made while loading.
+ */
+export const intro = {
+  loadingA11y: {
+    en: "Loading Danial Oza's portfolio",
+    ms: 'Memuatkan portfolio Danial Oza',
+  },
+}
+
+/**
+ * Statistics shown in the About section on the home page.
+ *
+ * `*A11y` strings are the single, stable sentence a screen reader announces
+ * for each figure. The visible number animates and is hidden from assistive
+ * technology, so this is where the meaning actually lives — keep it in step
+ * with the values in src/data/advisor.js.
+ */
+export const stats = {
+  clientsHelpedLabel: { en: 'clients helped', ms: 'klien dibantu' },
+  clientsHelpedA11y: {
+    en: 'More than 80 clients helped',
+    ms: 'Lebih 80 klien dibantu',
+  },
+  experienceLabel: { en: 'experience', ms: 'pengalaman' },
+  experienceA11y: {
+    en: '2 years of experience as a Life Advisor',
+    ms: '2 tahun pengalaman sebagai Penasihat Hayat',
+  },
+  consultationLabel: { en: 'consultation', ms: 'perundingan' },
+  consultationA11y: {
+    en: 'Consultation is free of charge',
+    ms: 'Perundingan adalah percuma',
+  },
 }
 
 export const recommendation = {

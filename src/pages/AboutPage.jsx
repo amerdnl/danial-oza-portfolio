@@ -1,6 +1,6 @@
 /**
  * About — the full advisor profile: biography, approach, who he works with,
- * how a consultation runs, and the testimonial placeholders.
+ * and how a consultation runs.
  */
 
 import { Link } from 'react-router-dom'
@@ -13,7 +13,6 @@ import About from '../components/sections/About'
 import WhyChooseMe from '../components/sections/WhyChooseMe'
 import ClientTypes from '../components/sections/ClientTypes'
 import Process from '../components/sections/Process'
-import Testimonials from '../components/sections/Testimonials'
 
 export function AboutPage() {
   const { t } = useLanguage()
@@ -36,7 +35,6 @@ export function AboutPage() {
       <WhyChooseMe />
       <ClientTypes />
       <Process />
-      <Testimonials />
     </>
   )
 }
