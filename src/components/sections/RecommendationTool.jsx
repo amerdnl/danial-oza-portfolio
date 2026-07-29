@@ -17,7 +17,7 @@
  * ============================================================================
  */
 
-import { useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import {
   AlertCircle,
@@ -51,7 +51,10 @@ export function RecommendationTool({ preview = false, showHeading = true }) {
   // src/context/recommendationContextValue.js
   const { state, dispatch } = useRecommendation()
   const [announcement, setAnnouncement] = useState('')
+  const questionnaireTopRef = useRef(null)
   const panelRef = useRef(null)
+  const scrollFrameRef = useRef(null)
+  const focusFrameRef = useRef(null)
 
   const { stepIndex, answers, errors, showResults } = state
   const step = questionnaireSteps[stepIndex]
@@ -64,9 +67,37 @@ export function RecommendationTool({ preview = false, showHeading = true }) {
   const currentStepNumber = showResults ? TOTAL_STEPS : stepIndex + 1
   const progressPercent = Math.round((currentStepNumber / TOTAL_STEPS) * 100)
 
-  /** Move focus to the top of the newly rendered step. */
-  const focusPanel = () => {
-    window.requestAnimationFrame(() => panelRef.current?.focus())
+  useEffect(
+    () => () => {
+      if (scrollFrameRef.current) window.cancelAnimationFrame(scrollFrameRef.current)
+      if (focusFrameRef.current) window.cancelAnimationFrame(focusFrameRef.current)
+    },
+    [],
+  )
+
+  /**
+   * After a successful state transition, reveal the stable questionnaire
+   * target (including progress) and then focus the newly rendered panel
+   * without allowing focus to move the viewport again.
+   */
+  const moveToQuestionnaireTop = () => {
+    if (scrollFrameRef.current) window.cancelAnimationFrame(scrollFrameRef.current)
+    if (focusFrameRef.current) window.cancelAnimationFrame(focusFrameRef.current)
+
+    scrollFrameRef.current = window.requestAnimationFrame(() => {
+      const prefersReducedMotion = window.matchMedia(
+        '(prefers-reduced-motion: reduce)',
+      ).matches
+
+      questionnaireTopRef.current?.scrollIntoView({
+        behavior: prefersReducedMotion ? 'auto' : 'smooth',
+        block: 'start',
+      })
+
+      focusFrameRef.current = window.requestAnimationFrame(() => {
+        panelRef.current?.focus({ preventScroll: true })
+      })
+    })
   }
 
   const validateStep = () => {
@@ -108,7 +139,7 @@ export function RecommendationTool({ preview = false, showHeading = true }) {
         t(ui.stepOf).replace('{current}', String(stepIndex + 2)).replace('{total}', String(TOTAL_STEPS)),
       )
     }
-    focusPanel()
+    moveToQuestionnaireTop()
   }
 
   const handleBack = () => {
@@ -116,13 +147,13 @@ export function RecommendationTool({ preview = false, showHeading = true }) {
     setAnnouncement(
       t(ui.stepOf).replace('{current}', String(stepIndex)).replace('{total}', String(TOTAL_STEPS)),
     )
-    focusPanel()
+    moveToQuestionnaireTop()
   }
 
   const handleReset = () => {
     dispatch({ type: 'reset' })
     setAnnouncement(t(ui.stepOf).replace('{current}', '1').replace('{total}', String(TOTAL_STEPS)))
-    focusPanel()
+    moveToQuestionnaireTop()
   }
 
   /* ---------------------------------------------------------------- preview
@@ -165,7 +196,10 @@ export function RecommendationTool({ preview = false, showHeading = true }) {
           srOnly={!showHeading}
         />
 
-        <div className={`mx-auto max-w-3xl ${showHeading ? 'mt-12' : ''}`}>
+        <div
+          ref={questionnaireTopRef}
+          className={`mx-auto max-w-3xl scroll-mt-24 ${showHeading ? 'mt-12' : ''}`}
+        >
           {/* Progress */}
           <div className="mb-6">
             <div className="mb-2 flex items-center justify-between text-sm">

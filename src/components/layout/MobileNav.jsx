@@ -12,8 +12,8 @@ import LanguageToggle from './LanguageToggle'
  * Mobile navigation panel.
  *
  * Accessibility behaviour:
- *  - focus moves into the panel when it opens and returns to the toggle when
- *    it closes
+ *  - focus moves into the panel when it opens and returns to the toggle after
+ *    a manual close; route selection leaves focus for the destination heading
  *  - Tab cycles within the panel while open
  *  - Escape closes it
  *  - body scroll is locked while it is open
@@ -30,6 +30,12 @@ export function MobileNav({ open, onClose, toggleRef, id = 'mobile-menu' }) {
     onClose()
     toggleRef?.current?.focus()
   }, [onClose, toggleRef])
+
+  // Route selection must not restore focus to a toggle from the old page.
+  // Closing here also handles selecting the route that is already active.
+  const closeForNavigation = useCallback(() => {
+    onClose()
+  }, [onClose])
 
   // Close whenever the route changes — covers every link in the panel.
   useEffect(() => {
@@ -115,7 +121,12 @@ export function MobileNav({ open, onClose, toggleRef, id = 'mobile-menu' }) {
           <ul className="flex flex-col gap-1">
             {navItems.map((item) => (
               <li key={item.path}>
-                <NavLink to={item.path} end={item.path === '/'} className="nav-link-mobile">
+                <NavLink
+                  to={item.path}
+                  end={item.path === '/'}
+                  onClick={closeForNavigation}
+                  className="nav-link-mobile"
+                >
                   {t(item.label)}
                 </NavLink>
               </li>
@@ -125,7 +136,11 @@ export function MobileNav({ open, onClose, toggleRef, id = 'mobile-menu' }) {
           <div className="mt-4 flex flex-col gap-4 border-t border-border pt-4">
             <LanguageToggle className="self-start" />
 
-            <Link to="/contact" className="btn btn-primary btn-block">
+            <Link
+              to="/contact"
+              onClick={closeForNavigation}
+              className="btn btn-primary btn-block"
+            >
               <CalendarCheck aria-hidden="true" className="size-4" />
               <span>{t(nav.bookConsultation)}</span>
             </Link>

@@ -139,6 +139,10 @@
     outline: none;
   }
 
+  h1[tabindex='-1'] {
+    scroll-margin-top: 6rem;
+  }
+
   input,
   select,
   textarea,
