@@ -40,22 +40,30 @@
         position: fixed;
         inset: 0;
         z-index: 999;
+        box-sizing: border-box;
         display: flex;
         min-height: 100vh;
+        min-height: 100svh;
         align-items: center;
         justify-content: center;
         overflow: hidden;
+        padding:
+          env(safe-area-inset-top)
+          env(safe-area-inset-right)
+          env(safe-area-inset-bottom)
+          env(safe-area-inset-left);
         background: linear-gradient(135deg, #fff9f9 0%, #f8eded 45%, #f0d9d9 100%);
-        color: #231f20;
-        font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-          sans-serif;
+        color: #1a0000;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       }
 
       .initial-loader__content {
+        box-sizing: border-box;
         width: 100%;
         max-width: 28rem;
         padding: 0 1.5rem;
         text-align: center;
+        animation: initial-loader-content-in 350ms ease-out both;
       }
 
       .initial-loader__brand {
@@ -67,30 +75,93 @@
 
       .initial-loader__title {
         margin: 0.5rem 0 0;
-        color: #6f6262;
+        color: #685b5b;
         font-size: 0.75rem;
         font-weight: 500;
         letter-spacing: 0.28em;
         text-transform: uppercase;
       }
 
-      .initial-loader__line {
+      .initial-loader__track {
+        position: relative;
         height: 1px;
         margin-top: 2.25rem;
         overflow: hidden;
         border-radius: 9999px;
-        background: #dccaca;
+        background: rgba(61, 0, 0, 0.16);
       }
 
-      .initial-loader__line::after {
-        display: block;
-        width: 35%;
-        height: 100%;
-        border-radius: inherit;
+      .initial-loader__progress {
+        position: absolute;
+        inset: 0;
+        border-radius: 9999px;
         background: #950101;
-        content: "";
+        box-shadow: 0 0 8px 0 rgba(149, 1, 1, 0.35);
+        transform: scaleX(0);
+        transform-origin: left center;
+        animation: initial-loader-progress 2.8s linear forwards;
+        will-change: transform;
+      }
+
+      @keyframes initial-loader-content-in {
+        from {
+          opacity: 0;
+          transform: translateY(6px);
+        }
+
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /*
+       * These points approximate an ease-out curve while keeping the elapsed
+       * progress easy for React to continue without jumping backwards.
+       */
+      @keyframes initial-loader-progress {
+        0% {
+          transform: scaleX(0);
+        }
+
+        25% {
+          transform: scaleX(0.4025);
+        }
+
+        50% {
+          transform: scaleX(0.69);
+        }
+
+        75% {
+          transform: scaleX(0.8625);
+        }
+
+        100% {
+          transform: scaleX(0.92);
+        }
+      }
+
+      @media (min-width: 640px) {
+        .initial-loader__brand {
+          font-size: 1.875rem;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .initial-loader__content {
+          animation: none;
+        }
+
+        .initial-loader__progress {
+          animation-duration: 800ms;
+          will-change: auto;
+        }
       }
     </style>
+
+    <script>
+      window.__DANIAL_LOADER_STARTED_AT__ = performance.now();
+    </script>
 
     <link rel="preload" as="image" href="/images/danial-oza.webp" fetchpriority="high" />
 
@@ -225,7 +296,9 @@
         <div class="initial-loader__content">
           <p class="initial-loader__brand">Danial Oza</p>
           <p class="initial-loader__title">Life Advisor</p>
-          <div class="initial-loader__line" aria-hidden="true"></div>
+          <div class="initial-loader__track" aria-hidden="true">
+            <div class="initial-loader__progress"></div>
+          </div>
         </div>
       </div>
     </div>

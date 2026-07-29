@@ -29,23 +29,36 @@ import { useEffect, useRef, useState } from 'react'
 export const INTRO_STORAGE_KEY = 'danial-oza-intro-seen'
 
 /**
- * How long the loading screen stays visible before the exit begins.
- * This is the single place the duration is defined.
+ * Intended time from the earliest static-loader timestamp until the exit
+ * begins. Slow startup uses the minimum handoff below instead of adding a
+ * fresh 2s delay after React mounts.
  */
 export const LOADING_DURATION_MS = 2000
 
 /**
- * Progress reaches 100 a little before the loader ends, so the completed
- * state is readable rather than flashing past as the screen fades.
+ * The static HTML bar runs for 2.8s and stops at 92%. Keep these values in
+ * sync with the critical keyframes in index.html so React can continue from
+ * approximately the same visual position.
  */
-export const PROGRESS_DURATION_MS = 1800
+const STATIC_LOADER_DURATION_MS = 2800
+const STATIC_LOADER_MAX_PROGRESS = 92
+
+/**
+ * If React starts after the intended 2s loading window, leave enough time for
+ * a visible handoff and completion rather than making the overlay disappear
+ * on the same frame that it mounts.
+ */
+export const MINIMUM_REACT_HANDOFF_MS = 350
+
+/** Let 100% remain visible briefly before the exit begins. */
+const PROGRESS_COMPLETE_LEAD_MS = 120
 
 /** Fade-out of the loader, after which the portfolio is fully interactive. */
 export const EXIT_DURATION_MS = 700
 
 /**
- * Reduced motion keeps the same 2000ms loading period — only the movement is
- * removed — but leaves the screen quickly once it is done.
+ * Reduced motion completes progress immediately and uses a shorter exit while
+ * preserving the same elapsed-time-aware automatic entry.
  */
 export const REDUCED_EXIT_DURATION_MS = 150
 
@@ -85,15 +98,37 @@ function prefersReducedMotion() {
  */
 const easeOutQuad = (progress) => 1 - Math.pow(1 - progress, 2)
 
+/** Time elapsed since the earliest loader timestamp written in index.html. */
+function getLoaderElapsed() {
+  if (typeof window === 'undefined') return 0
+
+  const startedAt = window.__DANIAL_LOADER_STARTED_AT__
+  if (!Number.isFinite(startedAt)) return 0
+
+  return Math.max(0, performance.now() - startedAt)
+}
+
+/**
+ * Match the static loader's ease-out curve and 92% ceiling. The CSS keyframes
+ * approximate this same curve from below, so the React handoff never jumps
+ * visibly backwards.
+ */
+function getStaticHandoffProgress() {
+  const fraction = Math.min(getLoaderElapsed() / STATIC_LOADER_DURATION_MS, 1)
+  return Math.floor(easeOutQuad(fraction) * STATIC_LOADER_MAX_PROGRESS)
+}
+
 export function useIntroExperience() {
+  const reduceMotion = typeof window === 'undefined' ? false : prefersReducedMotion()
+
   // `complete` immediately for anyone who has already seen the loader this
   // session, so there is no flash on internal refreshes.
   const [state, setState] = useState(() =>
     typeof window === 'undefined' || hasSeenIntro() ? 'complete' : 'loading',
   )
-  const [progress, setProgress] = useState(0)
-
-  const reduceMotion = typeof window === 'undefined' ? false : prefersReducedMotion()
+  const [progress, setProgress] = useState(() =>
+    state === 'complete' || reduceMotion ? 100 : getStaticHandoffProgress(),
+  )
 
   const frameRef = useRef(0)
   const timerRef = useRef(0)
@@ -104,41 +139,55 @@ export function useIntroExperience() {
 
     let cancelled = false
     const started = performance.now()
+    const elapsedBeforeReact = getLoaderElapsed()
+    const remainingDuration = Math.max(
+      MINIMUM_REACT_HANDOFF_MS,
+      LOADING_DURATION_MS - elapsedBeforeReact,
+    )
+    const progressDuration = Math.max(
+      100,
+      remainingDuration - PROGRESS_COMPLETE_LEAD_MS,
+    )
+    const startingProgress = getStaticHandoffProgress()
 
-    // Animate the counter. Reduced motion skips the animation and shows the
-    // finished value for the whole period instead.
+    // Continue from the static CSS bar. Reduced motion completes immediately;
+    // the timer below still guarantees a calm, automatic handoff.
     if (reduceMotion) {
       setProgress(100)
     } else {
+      setProgress((current) => Math.max(current, startingProgress))
+
       const tick = (now) => {
         if (cancelled) return
 
         const elapsed = now - started
-        const fraction = Math.min(elapsed / PROGRESS_DURATION_MS, 1)
+        const fraction = Math.min(elapsed / progressDuration, 1)
 
         if (fraction >= 1) {
           setProgress(100) // land on exactly 100, then rest
           return
         }
 
-        // Floor rather than round, so 100 is reached only when the animation
-        // genuinely finishes at PROGRESS_DURATION_MS — rounding would display
-        // 100 several hundred milliseconds early.
-        // Monotonic: never let the displayed value go backwards.
-        setProgress((current) => Math.max(current, Math.floor(easeOutQuad(fraction) * 100)))
+        const next =
+          startingProgress + (100 - startingProgress) * easeOutQuad(fraction)
+
+        // Monotonic: the React-controlled bar can never move behind the static
+        // position that it replaced.
+        setProgress((current) => Math.max(current, Math.floor(next)))
         frameRef.current = window.requestAnimationFrame(tick)
       }
 
       frameRef.current = window.requestAnimationFrame(tick)
     }
 
-    // The loader always lasts exactly LOADING_DURATION_MS, independent of the
-    // progress animation, so the visible duration is predictable.
+    // Count the time already spent in the static HTML loader. On a fast load,
+    // the original 2s duration is preserved; on a slow load, only the minimum
+    // React handoff is added.
     timerRef.current = window.setTimeout(() => {
       if (cancelled) return
       markIntroSeen()
       setState('exiting')
-    }, LOADING_DURATION_MS)
+    }, remainingDuration)
 
     return () => {
       cancelled = true
