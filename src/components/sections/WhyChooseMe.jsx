@@ -25,7 +25,9 @@ export function WhyChooseMe({ preview = false, limit, showHeading = true }) {
         <ul className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {visible.map((point, index) => (
             <Reveal as="li" key={point.id} delay={Math.min(index, 4) * 0.05}>
-              <div className="card card-hover h-full !bg-overlay-soft">
+              {/* No `card-hover`: these cards contain nothing clickable, and a
+                  hover lift would advertise an interaction that does not exist. */}
+              <div className="card h-full !bg-overlay-soft">
                 <Icon name={point.icon} className="size-6 text-brand-soft" />
                 <h3 className="mt-4 text-base font-bold text-heading">{t(point.title)}</h3>
                 <p className="text-small mt-2 text-muted">{t(point.description)}</p>

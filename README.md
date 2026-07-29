@@ -196,9 +196,23 @@ Replace this one file:
 public/images/danial-oza.jpg
 ```
 
-Keep the filename and the whole site updates. A **square** image of at least 800×800px works best — it is displayed in a square frame with `object-cover`.
+Keep the filename and the whole site updates.
 
-If you use a different filename or format, update `profileImage` in `src/data/advisor.js`. If your image is not square, also update `profileImageWidth` / `profileImageHeight` in the same file — those values reserve layout space so the page does not shift while the image loads.
+**Requirements — this is the hero image and loads with high priority, so size matters:**
+
+- **Square**, around **1000×1000px**
+- **Under ~400 KB.** The current file is 295 KB.
+- Update `profileImageWidth` / `profileImageHeight` in [`src/data/advisor.js`](src/data/advisor.js) **to match the file exactly**. They reserve layout space so the page does not shift while the image loads; a wrong aspect ratio defeats that.
+
+The full-resolution original is kept **outside the build** at `design-assets/danial-oza-original.jpg` (5824×7766, 12.8 MB). Vite only copies `public/`, so anything in `design-assets/` is never deployed. Re-crop from there if a different framing is wanted.
+
+To reproduce the current crop and compression from the original:
+
+```bash
+sips --cropOffset 2766 1424 -c 4400 4400 design-assets/danial-oza-original.jpg --out /tmp/c.jpg
+sips -Z 1000 /tmp/c.jpg --out /tmp/r.jpg
+sips -s format jpeg -s formatOptions 82 /tmp/r.jpg --out public/images/danial-oza.jpg
+```
 
 ---
 
@@ -338,13 +352,14 @@ Or from the terminal: `npx vercel --prod`
 
 Or from the terminal: `npx netlify deploy --prod --dir=dist`
 
-### After deploying
+### Pre-launch checklist — set the real domain
 
-Replace the placeholder domain `https://www.example.com` in:
+The site currently ships with `https://www.example.com` as a placeholder. Once the domain is known, replace it in **two** places:
 
-- `src/data/advisor.js` — `siteUrl`, which per-route canonical and Open Graph URLs are built from
-- `index.html` — the canonical URL, `og:url`, `og:image`, `twitter:image`, and the two JSON-LD blocks
-- `public/robots.txt` — the sitemap line
+1. **[`src/data/advisor.js`](src/data/advisor.js) → `siteUrl`** — drives the per-route canonical and Open Graph URLs at runtime. This is the important one.
+2. **[`index.html`](index.html)** — the static fallbacks a crawler sees before JavaScript runs: `canonical`, `og:url`, `og:image`, `twitter:image`, and the two JSON-LD blocks.
+
+Optionally add a `public/sitemap.xml` covering the seven routes and reference it from `public/robots.txt`. The `Sitemap:` line was deliberately removed because pointing at a file that returns 404 is worse than having no directive.
 
 Then check every route loads directly on the live domain, not just from in-app navigation.
 
@@ -354,11 +369,12 @@ Then check every route loads directly on the live domain, not just from in-app n
 
 | Item | Location | Notes |
 |---|---|---|
-| **Profile photo** | `public/images/danial-oza.jpg` | Generated avatar silhouette in the brand colours. Replace with the real photo. |
-| **Open Graph image** | `public/og-image.png` | Plain 1200×630 gradient. Replace with a real link-preview image. |
+| **Domain** | `src/data/advisor.js`, `index.html` | `https://www.example.com` — see the pre-launch checklist above. |
+| **Open Graph image** | `public/og-image.png` | Plain 1200×630 gradient. A card using the real photo would improve link previews. |
 | **Favicon** | `public/favicon.svg` | Generic shield mark in the brand colours. |
-| **Domain** | `index.html`, `robots.txt`, `advisor.js` | `https://www.example.com` throughout. |
 | **Bahasa Melayu copy** | `src/i18n/ui.js`, `src/data/*` | Drafted during the build. Needs Danial's review — especially the disclaimers and WhatsApp messages. |
+
+The **profile photo is real** and no longer a placeholder.
 
 Everything else — name, title, company, qualification, experience, client count, languages, availability, contact details, social links, the six categories, and the three achievements — is real information supplied by the advisor.
 

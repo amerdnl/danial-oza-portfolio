@@ -16,7 +16,11 @@
  * PRIVACY: this questionnaire deliberately collects no medical details, no
  * exact income, no bank balances, and no identity-card numbers. Keep it that
  * way when adding questions — savings are asked as a range of months, never
- * as an amount.
+ * as an amount, and smoking is asked as a plain yes/no status, never as
+ * quantity, duration, or any health condition.
+ *
+ * Answers live only in React state for the session (see
+ * src/context/recommendationContextValue.js). Nothing here is persisted.
  * ============================================================================
  */
 
@@ -83,6 +87,15 @@ export const questionnaireSteps = [
           { value: 'home', label: { en: 'Home based or remote', ms: 'Bekerja dari rumah atau jarak jauh' } },
           { value: 'not-applicable', label: { en: 'Not applicable', ms: 'Tidak berkenaan' } },
         ],
+      },
+      {
+        // Status only. Nothing about quantity, duration, or health is asked,
+        // and the answer never influences the recommendation categories — it
+        // is passed to Danial so he has it before the conversation starts.
+        name: 'smokingStatus',
+        type: 'single',
+        label: { en: 'Do you smoke?', ms: 'Adakah anda merokok?' },
+        options: yesNo,
       },
       {
         name: 'maritalStatus',

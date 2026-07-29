@@ -31,7 +31,8 @@ export function Achievements({ preview = false, showHeading = true }) {
         <ul className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {achievements.map((achievement, index) => (
             <Reveal as="li" key={achievement.id} delay={index * 0.08}>
-              <article className="card card-hover h-full !bg-overlay-soft text-center">
+              {/* No `card-hover`: these are informational, not clickable. */}
+              <article className="card h-full !bg-overlay-soft text-center">
                 <div className="mx-auto flex size-14 items-center justify-center rounded-full border border-brand bg-surface">
                   <Icon name={achievement.icon} className="size-6 text-brand-soft" />
                 </div>

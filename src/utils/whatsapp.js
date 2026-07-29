@@ -109,6 +109,10 @@ export function recommendationUrl(lang = 'en', answers = {}, areas = []) {
     [label('ageRange'), answerLabel('ageRange')],
     [label('employment'), answerLabel('employment')],
     [label('dependants'), answerLabel('dependants')],
+    // Status only — never any medical detail, and never a conclusion drawn
+    // from it. `answerLabel` resolves the translated label, so the raw stored
+    // value is never sent.
+    [label('smokingStatus'), answerLabel('smokingStatus')],
     [label('existingProtection'), existing.length ? existing.join(', ') : pick(labels.none, lang)],
     [label('concerns'), concerns.length ? concerns.join(', ') : pick(labels.none, lang)],
     [label('budget'), answerLabel('budget')],

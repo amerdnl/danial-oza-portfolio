@@ -14,8 +14,16 @@ import { cta, hero } from '../../i18n/ui'
 import { advisor } from '../../data/advisor'
 import { generalEnquiryUrl } from '../../utils/whatsapp'
 
+// The clients figure comes from the advisor config rather than being typed
+// here, so it cannot drift from the value shown elsewhere on the site.
 const TRUST_POINTS = [
-  { icon: Users, text: { en: '80+ clients helped', ms: '80+ klien dibantu' } },
+  {
+    icon: Users,
+    text: {
+      en: `${advisor.clientsHelped} clients helped`,
+      ms: `${advisor.clientsHelped} klien dibantu`,
+    },
+  },
   { icon: MapPin, text: { en: 'Serving all of Malaysia', ms: 'Berkhidmat di seluruh Malaysia' } },
   { icon: BadgeCheck, text: { en: 'Free consultation', ms: 'Perundingan percuma' } },
   { icon: Video, text: { en: 'Physical & online', ms: 'Fizikal & dalam talian' } },

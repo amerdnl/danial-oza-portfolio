@@ -16,6 +16,9 @@ dist-ssr
 .vscode/*
 !.vscode/extensions.json
 .idea
+# Match .DS_Store at any depth. Vite copies public/ verbatim into the build,
+# so a stray .DS_Store there would otherwise be deployed.
+**/.DS_Store
 .DS_Store
 *.suo
 *.ntvs*

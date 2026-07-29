@@ -33,7 +33,7 @@ import { useLanguage } from '../../i18n/languageContextValue'
 import { previews, recommendation as ui } from '../../i18n/ui'
 import { questionnaireSteps } from '../../data/questionnaire'
 import { servicesById } from '../../data/services'
-import { getRecommendations, RESULT_LIMITATIONS } from '../../utils/recommendationEngine'
+import { getRecommendations, getLimitations } from '../../utils/recommendationEngine'
 import { recommendationUrl } from '../../utils/whatsapp'
 import { TOTAL_STEPS, useRecommendation } from '../../context/recommendationContextValue'
 import SectionHeading from '../common/SectionHeading'
@@ -376,7 +376,7 @@ function Results({ results, answers, lang, t, onReset }) {
           {t(ui.limitationsHeading)}
         </h4>
         <ul className="mt-3 flex flex-col gap-2">
-          {RESULT_LIMITATIONS.map((limitation) => (
+          {getLimitations(answers).map((limitation) => (
             <li key={limitation.id} className="text-small text-muted">
               • {t(limitation.text)}
             </li>

@@ -351,7 +351,33 @@ export const RESULT_LIMITATIONS = [
       ms: 'Keputusan ini hanya mencerminkan pilihan yang anda buat. Perbualan biasanya akan mendedahkan butiran yang tidak dapat ditangkap oleh borang.',
     },
   },
+  {
+    // Only shown to someone who answered "yes" — a non-smoker does not need an
+    // underwriting caveat about smoking.
+    //
+    // Deliberately says "may be considered" and "may affect". It does not
+    // predict approval or rejection, calculate a contribution or loading, or
+    // draw any medical conclusion, and it changes no recommendation.
+    id: 'smoking-assessment',
+    when: (answers) => answers?.smokingStatus === 'yes',
+    text: {
+      en: 'Smoking status may be considered during the provider’s assessment and may affect terms, contributions, or eligibility depending on the applicable takaful certificate and underwriting requirements.',
+      ms: 'Status merokok mungkin diambil kira semasa penilaian pengendali dan mungkin mempengaruhi terma, caruman, atau kelayakan bergantung pada sijil takaful yang berkenaan serta keperluan pengunderaitan.',
+    },
+  },
 ]
+
+/**
+ * The limitations that apply to a given set of answers.
+ *
+ * Entries without a `when` predicate always apply; the rest are gated. Keeps
+ * the results screen free of caveats that are not relevant to the visitor.
+ */
+export function getLimitations(answers) {
+  return RESULT_LIMITATIONS.filter(
+    (limitation) => typeof limitation.when !== 'function' || limitation.when(answers),
+  )
+}
 
 /** Fallback used when nothing scores — e.g. someone selects "Unsure where to begin". */
 const BROAD_REVIEW_FALLBACK = {

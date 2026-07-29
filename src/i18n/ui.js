@@ -10,17 +10,6 @@
  * particularly anything describing coverage, eligibility, or approval.
  */
 
-export const seo = {
-  title: {
-    en: 'Danial Oza | Life Advisor and Takaful Consultation Malaysia',
-    ms: 'Danial Oza | Penasihat Hayat dan Perundingan Takaful Malaysia',
-  },
-  description: {
-    en: 'Get personalised takaful guidance from Danial Oza, a registered AIA PUBLIC Takaful Life Advisor serving clients throughout Malaysia through physical and online consultations.',
-    ms: 'Dapatkan panduan takaful yang diperibadikan daripada Danial Oza, Penasihat Hayat AIA PUBLIC Takaful berdaftar yang berkhidmat di seluruh Malaysia melalui perundingan fizikal dan dalam talian.',
-  },
-}
-
 export const nav = {
   home: { en: 'Home', ms: 'Utama' },
   about: { en: 'About', ms: 'Tentang' },
@@ -48,7 +37,10 @@ export const routeMeta = {
       en: 'Danial Oza | Life Advisor and Takaful Consultation Malaysia',
       ms: 'Danial Oza | Penasihat Hayat dan Perundingan Takaful Malaysia',
     },
-    description: seo.description,
+    description: {
+      en: 'Get personalised takaful guidance from Danial Oza, a registered AIA PUBLIC Takaful Life Advisor serving clients throughout Malaysia through physical and online consultations.',
+      ms: 'Dapatkan panduan takaful yang diperibadikan daripada Danial Oza, Penasihat Hayat AIA PUBLIC Takaful berdaftar yang berkhidmat di seluruh Malaysia melalui perundingan fizikal dan dalam talian.',
+    },
   },
   about: {
     title: {
@@ -217,7 +209,6 @@ export const cta = {
   showLess: { en: 'Show less', ms: 'Tunjuk kurang' },
   askAboutThis: { en: 'Ask about this', ms: 'Tanya tentang ini' },
   startQuestionnaire: { en: 'Start the questionnaire', ms: 'Mulakan soal selidik' },
-  openWhatsApp: { en: 'Open WhatsApp', ms: 'Buka WhatsApp' },
   floatingWhatsApp: {
     en: 'Chat with Danial on WhatsApp',
     ms: 'Sembang dengan Danial di WhatsApp',
@@ -236,10 +227,6 @@ export const hero = {
   photoAlt: {
     en: 'Portrait of Danial Oza, Life Advisor with AIA PUBLIC Takaful Berhad',
     ms: 'Potret Danial Oza, Penasihat Hayat dengan AIA PUBLIC Takaful Berhad',
-  },
-  photoPlaceholderNote: {
-    en: 'Placeholder image — replace public/images/danial-oza.jpg with the advisor photo.',
-    ms: 'Imej sementara — gantikan public/images/danial-oza.jpg dengan foto penasihat.',
   },
 }
 
@@ -438,7 +425,6 @@ export const recommendation = {
     ms: 'Kongsikan keputusan ini dengan Danial melalui WhatsApp. Beliau boleh menerangkan apa yang sebenarnya dilindungi oleh setiap bidang, apa yang tidak dilindungi, dan secara kasar apa yang terlibat — sebelum anda membuat sebarang keputusan.',
   },
   sendResults: { en: 'Send my results on WhatsApp', ms: 'Hantar keputusan saya di WhatsApp' },
-  yourAnswers: { en: 'Your answers', ms: 'Jawapan anda' },
   disclaimer: {
     en: 'This recommendation is based only on the information selected in this questionnaire and is intended for general educational purposes. It is not a personalised financial recommendation, medical assessment, or guarantee of eligibility. Final suitability, contributions, coverage, exclusions, waiting periods, and approval are subject to further consultation and the relevant takaful provider’s terms and assessment.',
     ms: 'Cadangan ini berdasarkan maklumat yang dipilih dalam soal selidik ini sahaja dan bertujuan untuk pendidikan umum. Ia bukan cadangan kewangan yang diperibadikan, penilaian perubatan, atau jaminan kelayakan. Kesesuaian akhir, caruman, perlindungan, pengecualian, tempoh menunggu, dan kelulusan adalah tertakluk kepada perundingan lanjut serta terma dan penilaian pengendali takaful yang berkaitan.',
@@ -545,7 +531,6 @@ export const validation = {
     en: 'Please check the highlighted fields below.',
     ms: 'Sila semak ruangan yang ditandakan di bawah.',
   },
-  required_short: { en: 'Required', ms: 'Wajib' },
 }
 
 export const footer = {
@@ -581,5 +566,4 @@ export const common = {
   opensInNewTab: { en: 'opens in a new tab', ms: 'dibuka dalam tab baharu' },
   yes: { en: 'Yes', ms: 'Ya' },
   no: { en: 'No', ms: 'Tidak' },
-  notSure: { en: 'Not sure', ms: 'Tidak pasti' },
 }
