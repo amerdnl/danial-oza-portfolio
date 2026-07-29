@@ -13,9 +13,8 @@ import LoadingScreen from './LoadingScreen'
  * There is no interaction here — no entry control, no click handler, no key
  * listener. The overlay dismisses itself on a timer.
  *
- * Deliberately dark in both light and dark themes, using the locked brand
- * palette directly rather than theme tokens, so the opening always looks the
- * same. Nothing here reads or writes the visitor's theme preference.
+ * Uses the site's single light palette, so the loader and the page it reveals
+ * are one continuous theme with no dark moment in between.
  */
 export function IntroExperience({ state, progress, isBlocking }) {
   useLockBodyScroll(isBlocking)
@@ -47,10 +46,11 @@ export function IntroExperience({ state, progress, isBlocking }) {
         exiting ? 'pointer-events-none opacity-0' : 'opacity-100'
       }`}
     >
-      {/* Soft red bloom — decorative only. */}
+      {/* Soft red bloom — decorative only. Low opacity so it reads as a warm
+          tint on the light background rather than a smudge. */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute left-1/2 top-1/2 size-[42rem] max-w-[140vw] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#950101] opacity-[0.16] blur-[130px]"
+        className="pointer-events-none absolute left-1/2 top-1/2 size-[42rem] max-w-[140vw] -translate-x-1/2 -translate-y-1/2 rounded-full bg-brand opacity-[0.07] blur-[130px]"
       />
 
       <div className="relative flex w-full items-center justify-center">

@@ -6,7 +6,6 @@ import { nav } from '../../i18n/ui'
 import { navItems } from '../../routes/navItems'
 import useLockBodyScroll from '../../hooks/useLockBodyScroll'
 import LanguageToggle from './LanguageToggle'
-import ThemeToggle from './ThemeToggle'
 
 /**
  * Mobile navigation panel.
@@ -98,10 +97,7 @@ export function MobileNav({ open, onClose, toggleRef, id = 'mobile-menu' }) {
         </ul>
 
         <div className="mt-4 flex flex-col gap-4 border-t border-border pt-4">
-          <div className="flex items-center justify-between gap-3">
-            <LanguageToggle />
-            <ThemeToggle />
-          </div>
+          <LanguageToggle className="self-start" />
 
           <Link to="/contact" className="btn btn-primary btn-block">
             <CalendarCheck aria-hidden="true" className="size-4" />

@@ -39,17 +39,6 @@ export const nav = {
 }
 
 /**
- * Theme toggle wording. The label always describes what pressing the button
- * WILL DO, which is the clearer pattern for screen-reader users.
- */
-export const theme = {
-  switchToLight: { en: 'Switch to light mode', ms: 'Tukar ke mod cerah' },
-  switchToDark: { en: 'Switch to dark mode', ms: 'Tukar ke mod gelap' },
-  lightMode: { en: 'Light mode', ms: 'Mod cerah' },
-  darkMode: { en: 'Dark mode', ms: 'Mod gelap' },
-}
-
-/**
  * Per-route page metadata and page-header copy.
  * Keys match the `key` field in src/routes/navItems.js.
  */

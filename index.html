@@ -16,34 +16,12 @@
     />
     <meta name="author" content="Danial Oza" />
     <meta name="robots" content="index, follow" />
-    <meta name="theme-color" content="#000000" />
-
     <!--
-      Theme, applied before first paint so the page never flashes the wrong
-      colour. Deliberately blocking and inline: it must run before the body
-      renders. Mirrors resolveInitialTheme() in src/context/themeContextValue.js
-      — saved preference, then system preference, then dark.
+      The site has one permanent light theme, so the browser UI and the page
+      always match. No theme-selection script is needed before first paint.
     -->
-    <script>
-      (function () {
-        try {
-          var stored = localStorage.getItem('danial-oza-theme')
-          var theme =
-            stored === 'light' || stored === 'dark'
-              ? stored
-              : window.matchMedia('(prefers-color-scheme: light)').matches
-                ? 'light'
-                : 'dark'
-          document.documentElement.setAttribute('data-theme', theme)
-          if (theme === 'light') {
-            var meta = document.querySelector('meta[name="theme-color"]')
-            if (meta) meta.setAttribute('content', '#FFF9F9')
-          }
-        } catch (e) {
-          document.documentElement.setAttribute('data-theme', 'dark')
-        }
-      })()
-    </script>
+    <meta name="theme-color" content="#FFF9F9" />
+    <meta name="color-scheme" content="light" />
 
     <!-- PLACEHOLDER — replace www.example.com with the live domain once deployed. -->
     <link rel="canonical" href="https://www.example.com/" />

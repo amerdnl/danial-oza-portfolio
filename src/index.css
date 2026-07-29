@@ -2,53 +2,55 @@
 @import 'tailwindcss';
 
 /* ==========================================================================
-   THEME TOKENS
+   THEME TOKENS — ONE PERMANENT LIGHT THEME
    ==========================================================================
-   Colours are declared TWICE:
+   The site has a single theme. There is no theme switching, no stored
+   preference, and no system-preference detection: these values are the
+   design, full stop.
 
-   1. `@theme inline` below maps Tailwind's colour utilities onto CSS custom
-      properties *by reference*. The `inline` keyword is essential — without
-      it Tailwind bakes the resolved colour value into each utility at build
-      time and the theme could never change at runtime.
+   `@theme` does two jobs — it generates the Tailwind colour utilities
+   (`bg-surface`, `text-muted`, `border-border`) and emits the same values
+   as custom properties on :root, so the component classes further down can
+   reference them with `var(--color-*)`.
 
-   2. The `:root[data-theme]` blocks further down hold the actual values for
-      each theme. Because the utilities point at `var(--t-*)`, redefining
-      those variables under a different `data-theme` flips the whole site
-      instantly.
+   Use the SEMANTIC name in components, never a raw hex value.
 
-   `data-theme` is set on <html> by the inline script in index.html (before
-   first paint, to avoid a flash) and thereafter by ThemeContext.
-
-   Use the SEMANTIC name in components (`bg-surface`, `text-muted`), never a
-   raw hex value.
+   Contrast (WCAG AA), verified:
+     white on #D90000 ....... 5.1:1  (CTA buttons)
+     #2B2020 on #FFF9F9 .... 14.4:1  (body text)
+     #685B5B on #FFF9F9 ..... 5.8:1  (muted text)
+     #685B5B on #F8EDED ..... 5.3:1  (muted on alternate sections)
+     #950101 on #FFF9F9 ..... 9.6:1  (brand red, small text)
    ========================================================================== */
-@theme inline {
+@theme {
   /* Surfaces */
-  --color-page: var(--t-page);
-  --color-section: var(--t-section);
-  --color-surface: var(--t-surface);
-  --color-surface-raised: var(--t-surface-raised);
+  --color-page: #fff9f9; /* main page background */
+  --color-section: #f8eded; /* alternate section background */
+  --color-surface: #ffffff; /* card background */
+  --color-surface-raised: #fff3f3; /* raised card / hover state */
 
   /* Brand */
-  --color-brand: var(--t-brand);
-  --color-brand-soft: var(--t-brand-soft);
-  --color-accent: var(--t-accent);
-  --color-on-accent: var(--t-on-accent);
+  --color-brand: #950101; /* main brand colour — surfaces, borders, accents */
+  --color-brand-soft: #950101; /* small text + icons; kept distinct from
+                                  --color-brand because they carry different
+                                  meanings even at the same value */
+  --color-accent: #d90000; /* primary CTA — darkened so white labels clear AA */
+  --color-on-accent: #ffffff; /* text sitting on brand/accent fills */
 
   /* Text */
-  --color-heading: var(--t-heading);
-  --color-body: var(--t-body);
-  --color-muted: var(--t-muted);
+  --color-heading: #1a0000;
+  --color-body: #2b2020;
+  --color-muted: #685b5b;
 
   /* Lines */
-  --color-border: var(--t-border);
-  --color-border-strong: var(--t-border-strong);
+  --color-border: rgba(61, 0, 0, 0.16);
+  --color-border-strong: rgba(61, 0, 0, 0.3);
 
   /* Status */
-  --color-focus: var(--t-focus);
-  --color-success: var(--t-success);
-  --color-error: var(--t-error);
-  --color-warning: var(--t-warning);
+  --color-focus: #950101;
+  --color-success: #14663c;
+  --color-error: #b00020;
+  --color-warning: #8a5300;
 
   /* Typography */
   --font-sans: 'Plus Jakarta Sans Variable', ui-sans-serif, system-ui, -apple-system,
@@ -59,93 +61,22 @@
 }
 
 /* --------------------------------------------------------------------------
-   DARK THEME — THE LOCKED BRAND PALETTE
-   These values are fixed for this project and must not be substituted.
-   Black #000000 · Dark burgundy #3D0000 · Deep red #950101 · Bright red #FF0000
-   Dark is also the default when no preference can be determined.
+   Non-utility tokens.
+   Translucent fills, gradients, and shadows that Tailwind should not build
+   colour utilities from. Referenced only by the component classes below.
    -------------------------------------------------------------------------- */
-:root,
-[data-theme='dark'] {
-  color-scheme: dark;
-
-  --t-page: #000000; /* main page background */
-  --t-section: #3d0000; /* alternate section background */
-  --t-surface: #160000; /* card background */
-  --t-surface-raised: #1f0303; /* raised card / hover state */
-
-  --t-brand: #950101; /* main brand colour */
-  --t-brand-soft: #ff7a7a; /* small text + icons: readable at 13px on black */
-  --t-accent: #ff0000; /* primary CTA — used sparingly */
-  --t-on-accent: #ffffff;
-
-  --t-heading: #ffffff;
-  --t-body: #f5f5f5;
-  --t-muted: #b8b8b8;
-
-  --t-border: rgba(255, 255, 255, 0.12);
-  --t-border-strong: rgba(255, 255, 255, 0.22);
-
-  --t-focus: #ffffff;
-  --t-success: #6ee7a8;
-  --t-error: #ff8f8f;
-  --t-warning: #ffc46b;
-
-  /* Translucent overlays, expressed per theme so cards keep the same feel. */
-  --t-overlay-soft: rgba(0, 0, 0, 0.4);
-  --t-overlay-strong: rgba(0, 0, 0, 0.9);
-  --t-hover-tint: rgba(255, 255, 255, 0.08);
-  --t-input-bg: rgba(0, 0, 0, 0.55);
-  --t-input-bg-focus: rgba(0, 0, 0, 0.75);
-
-  --t-hero-gradient: linear-gradient(135deg, #000000 0%, #3d0000 55%, #950101 100%);
-  --t-cta-shadow: rgba(255, 0, 0, 0.65);
-  --t-cta-shadow-hover: rgba(255, 0, 0, 0.75);
-}
-
-/* --------------------------------------------------------------------------
-   LIGHT THEME
-   Warm, red-tinted surfaces rather than pure white, keeping the same brand
-   identity. Contrast checked against WCAG AA:
-     white on #D90000 ....... 5.1:1  (CTA buttons)
-     #2B2020 on #FFF9F9 .... 14.4:1  (body text)
-     #685B5B on #FFF9F9 ..... 5.8:1  (muted text)
-     #685B5B on #F8EDED ..... 5.3:1  (muted on alternate sections)
-     #950101 on #FFF9F9 ..... 9.6:1  (brand-soft small text)
-   -------------------------------------------------------------------------- */
-[data-theme='light'] {
+:root {
   color-scheme: light;
 
-  --t-page: #fff9f9;
-  --t-section: #f8eded;
-  --t-surface: #ffffff;
-  --t-surface-raised: #fff3f3;
+  --ui-overlay-soft: rgba(255, 255, 255, 0.75);
+  --ui-overlay-strong: rgba(255, 249, 249, 0.95);
+  --ui-hover-tint: rgba(61, 0, 0, 0.06);
+  --ui-input-bg: #ffffff;
+  --ui-input-bg-focus: #ffffff;
 
-  --t-brand: #950101;
-  --t-brand-soft: #950101; /* a pale red would vanish on a light background */
-  --t-accent: #d90000; /* darkened so white label text clears AA */
-  --t-on-accent: #ffffff;
-
-  --t-heading: #1a0000;
-  --t-body: #2b2020;
-  --t-muted: #685b5b;
-
-  --t-border: rgba(61, 0, 0, 0.16);
-  --t-border-strong: rgba(61, 0, 0, 0.3);
-
-  --t-focus: #950101;
-  --t-success: #14663c;
-  --t-error: #b00020;
-  --t-warning: #8a5300;
-
-  --t-overlay-soft: rgba(255, 255, 255, 0.75);
-  --t-overlay-strong: rgba(255, 249, 249, 0.95);
-  --t-hover-tint: rgba(61, 0, 0, 0.06);
-  --t-input-bg: #ffffff;
-  --t-input-bg-focus: #ffffff;
-
-  --t-hero-gradient: linear-gradient(135deg, #fff9f9 0%, #f8eded 45%, #f0d9d9 100%);
-  --t-cta-shadow: rgba(149, 1, 1, 0.35);
-  --t-cta-shadow-hover: rgba(149, 1, 1, 0.45);
+  --ui-hero-gradient: linear-gradient(135deg, #fff9f9 0%, #f8eded 45%, #f0d9d9 100%);
+  --ui-cta-shadow: rgba(149, 1, 1, 0.35);
+  --ui-cta-shadow-hover: rgba(149, 1, 1, 0.45);
 }
 
 /* ==========================================================================
@@ -314,12 +245,12 @@
   .btn-primary {
     background-image: linear-gradient(135deg, var(--color-brand), var(--color-accent));
     color: var(--color-on-accent);
-    box-shadow: 0 8px 24px -10px var(--t-cta-shadow);
+    box-shadow: 0 8px 24px -10px var(--ui-cta-shadow);
   }
 
   .btn-primary:hover:not(:disabled) {
     transform: translateY(-2px);
-    box-shadow: 0 14px 30px -10px var(--t-cta-shadow-hover);
+    box-shadow: 0 14px 30px -10px var(--ui-cta-shadow-hover);
   }
 
   .btn-secondary {
@@ -329,18 +260,18 @@
   }
 
   .btn-secondary:hover:not(:disabled) {
-    background-color: var(--t-hover-tint);
+    background-color: var(--ui-hover-tint);
     border-color: var(--color-accent);
   }
 
   .btn-ghost {
-    background-color: var(--t-hover-tint);
+    background-color: var(--ui-hover-tint);
     border: 1px solid var(--color-border);
     color: var(--color-body);
   }
 
   .btn-ghost:hover:not(:disabled) {
-    background-color: var(--t-hover-tint);
+    background-color: var(--ui-hover-tint);
     border-color: var(--color-border-strong);
   }
 
@@ -361,7 +292,7 @@
   /* Cards sitting on an alternate-background section need their own
      contrast; this replaces the old hardcoded bg-black/40. */
   .card-on-alt {
-    background-color: var(--t-overlay-soft);
+    background-color: var(--ui-overlay-soft);
   }
 
   .card-hover {
@@ -393,7 +324,7 @@
     width: 100%;
     min-height: 2.875rem;
     padding: 0.7rem 0.9rem;
-    background-color: var(--t-input-bg);
+    background-color: var(--ui-input-bg);
     border: 1px solid var(--color-border);
     border-radius: 0.65rem;
     color: var(--color-body);
@@ -415,7 +346,7 @@
   .input:focus {
     outline: none;
     border-color: var(--color-accent);
-    background-color: var(--t-input-bg-focus);
+    background-color: var(--ui-input-bg-focus);
   }
 
   .input:focus-visible {
@@ -453,7 +384,7 @@
     align-items: center;
     gap: 0.4rem;
     padding: 0.4rem 0.8rem;
-    background-color: var(--t-hover-tint);
+    background-color: var(--ui-hover-tint);
     border: 1px solid var(--color-border);
     border-radius: 999px;
     font-size: 0.8125rem;
@@ -551,7 +482,7 @@
   .nav-link-mobile[aria-current='page'] {
     color: var(--color-heading);
     font-weight: 700;
-    background-color: var(--t-hover-tint);
+    background-color: var(--ui-hover-tint);
     border-left-color: var(--color-accent);
   }
 }
@@ -607,7 +538,7 @@
 
   /* Hero gradient — the one large gradient on the page. */
   .bg-hero {
-    background-image: var(--t-hero-gradient);
+    background-image: var(--ui-hero-gradient);
   }
 
   .bg-cta-gradient {
@@ -616,25 +547,25 @@
 
   /* Translucent surfaces that need to read correctly in both themes. */
   .bg-overlay-soft {
-    background-color: var(--t-overlay-soft);
+    background-color: var(--ui-overlay-soft);
   }
 
   .bg-overlay-strong {
-    background-color: var(--t-overlay-strong);
+    background-color: var(--ui-overlay-strong);
   }
 
   .bg-hover-tint {
-    background-color: var(--t-hover-tint);
+    background-color: var(--ui-hover-tint);
   }
 
   /* ------------------------------------------------------------------
      INTRO EXPERIENCE
-     The opening sequence is deliberately dark in BOTH themes, so it uses
-     the locked palette directly rather than the theme tokens. Every
-     animation here is neutralised by the reduced-motion block below.
+     The opening loader shares the site's light palette, so there is no
+     dark moment before the page appears. Every animation here is
+     neutralised by the reduced-motion block below.
      ------------------------------------------------------------------ */
   .intro-overlay {
-    background-image: linear-gradient(135deg, #000000 0%, #3d0000 70%, #000000 100%);
+    background-image: linear-gradient(135deg, #fff9f9 0%, #f8eded 45%, #f0d9d9 100%);
     /* svh accounts for mobile browser chrome; vh is the fallback. */
     min-height: 100vh;
     min-height: 100svh;

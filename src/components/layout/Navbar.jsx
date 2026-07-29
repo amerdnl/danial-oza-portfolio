@@ -6,7 +6,6 @@ import { nav } from '../../i18n/ui'
 import { navItems } from '../../routes/navItems'
 import { advisor } from '../../data/advisor'
 import LanguageToggle from './LanguageToggle'
-import ThemeToggle from './ThemeToggle'
 import MobileNav from './MobileNav'
 
 /**
@@ -16,9 +15,9 @@ import MobileNav from './MobileNav'
  * stays readable against both.
  *
  * The full horizontal bar appears at xl (1280px) rather than lg, because
- * below that the wordmark, seven links, language toggle, theme toggle, and
- * CTA start to crowd each other. Between 1024px and 1280px the mobile panel
- * is used instead.
+ * below that the wordmark, seven links, language toggle, and CTA start to
+ * crowd each other. Between 1024px and 1280px the mobile panel is used
+ * instead.
  *
  * `NavLink` supplies aria-current="page" automatically; the active style in
  * index.css combines a heavier weight with an underline bar so the current
@@ -87,10 +86,7 @@ export function Navbar() {
 
         {/* Controls */}
         <div className="flex items-center gap-2">
-          <div className="hidden items-center gap-2 sm:flex">
-            <LanguageToggle />
-            <ThemeToggle />
-          </div>
+          <LanguageToggle className="hidden sm:inline-flex" />
 
           <Link
             to="/contact"

@@ -5,9 +5,9 @@
  * React Router, with no full page reloads. See src/routes/AppRoutes.jsx for
  * the route table.
  *
- * Provider order matters — ThemeProvider sits outermost so the theme applies
- * to everything, and LanguageProvider wraps the router because navigation
- * chrome and page metadata are both bilingual.
+ * LanguageProvider wraps the router because navigation chrome and page
+ * metadata are both bilingual. There is no theme provider — the site has one
+ * permanent light theme, defined entirely in src/index.css.
  *
  * THE INTRO OVERLAY
  * On the first visit of a browser session, IntroExperience covers the page
@@ -24,7 +24,6 @@
  */
 
 import { BrowserRouter } from 'react-router-dom'
-import ThemeProvider from './context/ThemeContext'
 import RecommendationProvider from './context/RecommendationContext'
 import { LanguageProvider } from './i18n/LanguageContext'
 import AppRoutes from './routes/AppRoutes'
@@ -35,23 +34,21 @@ export function App() {
   const intro = useIntroExperience()
 
   return (
-    <ThemeProvider>
-      <LanguageProvider>
-        <RecommendationProvider>
-          <IntroExperience
-            state={intro.state}
-            progress={intro.progress}
-            isBlocking={intro.isBlocking}
-          />
+    <LanguageProvider>
+      <RecommendationProvider>
+        <IntroExperience
+          state={intro.state}
+          progress={intro.progress}
+          isBlocking={intro.isBlocking}
+        />
 
-          <div inert={intro.isBlocking} aria-hidden={intro.isBlocking || undefined}>
-            <BrowserRouter>
-              <AppRoutes />
-            </BrowserRouter>
-          </div>
-        </RecommendationProvider>
-      </LanguageProvider>
-    </ThemeProvider>
+        <div inert={intro.isBlocking} aria-hidden={intro.isBlocking || undefined}>
+          <BrowserRouter>
+            <AppRoutes />
+          </BrowserRouter>
+        </div>
+      </RecommendationProvider>
+    </LanguageProvider>
   )
 }
 

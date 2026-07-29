@@ -4,7 +4,7 @@ A bilingual (English / Bahasa Melayu) portfolio website for **Danial Oza**, a Li
 
 The site introduces Danial, explains the six takaful protection categories, offers an educational recommendation questionnaire, and routes every enquiry to WhatsApp. There is no backend — nothing is stored anywhere.
 
-It is a **single-page application** with multiple routes and a **light/dark theme**.
+It is a **single-page application** with multiple routes and a single permanent light theme.
 
 ---
 
@@ -13,7 +13,7 @@ It is a **single-page application** with multiple routes and a **light/dark them
 - [Technology](#technology)
 - [Getting started](#getting-started)
 - [Routing](#routing)
-- [Light and dark themes](#light-and-dark-themes)
+- [The theme](#the-theme)
 - [Updating content](#updating-content)
 - [Replacing the profile photo](#replacing-the-profile-photo)
 - [Changing the WhatsApp number](#changing-the-whatsapp-number)
@@ -32,7 +32,7 @@ It is a **single-page application** with multiple routes and a **light/dark them
 | React 19 | UI |
 | Vite 8 | Dev server and build |
 | React Router 7 | Client-side routing |
-| Tailwind CSS 4 | Styling, configured in CSS via `@theme inline` (there is no `tailwind.config.js`) |
+| Tailwind CSS 4 | Styling, configured in CSS via `@theme` (there is no `tailwind.config.js`) |
 | lucide-react | Interface and category icons |
 | react-icons | Brand icons (WhatsApp, Instagram, Facebook, LinkedIn, TikTok) |
 | @fontsource-variable/plus-jakarta-sans | Self-hosted font |
@@ -113,62 +113,47 @@ Use React Router's `Link` / `NavLink` for anything inside the site — a plain `
 
 ---
 
-## Light and dark themes
+## The theme
 
-Visitors switch themes with the button in the header. **Dark is the default** and uses the original locked brand palette unchanged.
+The site has **one permanent light theme**. There is no theme switcher, no stored preference, and no system-preference detection — the operating system being in dark mode does not change the site.
 
-### How the colours work
+### Where the colours live
 
-Colours are declared in two places in [`src/index.css`](src/index.css):
+All of them are at the top of [`src/index.css`](src/index.css), in two blocks:
 
-1. An **`@theme inline`** block maps Tailwind's colour utilities onto CSS variables *by reference*.
-2. `:root, [data-theme='dark']` and `[data-theme='light']` blocks hold the actual values.
+1. **`@theme`** — the semantic colours. Tailwind turns each one into a utility (`bg-surface`, `text-muted`, `border-border`) and also emits it as a custom property on `:root`, so the component classes further down can use `var(--color-*)`.
+2. **`:root`** — the `--ui-*` tokens: translucent fills, gradients, and shadows that should not become colour utilities.
 
-```css
-@theme inline {
-  --color-surface: var(--t-surface);   /* utility points at the variable */
-}
-:root, [data-theme='dark'] { --t-surface: #160000; }
-[data-theme='light']       { --t-surface: #FFFFFF; }
-```
-
-> ⚠️ **The `inline` keyword is essential.** A plain `@theme` block bakes the resolved colour into every utility at build time, and the theme could then never change at runtime — the toggle would compile fine and silently do nothing.
-
-### The tokens
-
-| Token | Dark (locked) | Light |
+| Token | Value | Used for |
 |---|---|---|
-| `page` | `#000000` | `#FFF9F9` |
-| `section` | `#3D0000` | `#F8EDED` |
-| `surface` | `#160000` | `#FFFFFF` |
-| `surface-raised` | `#1F0303` | `#FFF3F3` |
-| `brand` | `#950101` | `#950101` |
-| `brand-soft` | `#FF7A7A` | `#950101` |
-| `accent` (CTA) | `#FF0000` | `#D90000` |
-| `heading` | `#FFFFFF` | `#1A0000` |
-| `body` | `#F5F5F5` | `#2B2020` |
-| `muted` | `#B8B8B8` | `#685B5B` |
-| `border` | `rgba(255,255,255,.12)` | `rgba(61,0,0,.16)` |
+| `page` | `#FFF9F9` | Main page background |
+| `section` | `#F8EDED` | Alternate section background |
+| `surface` | `#FFFFFF` | Card background |
+| `surface-raised` | `#FFF3F3` | Raised card / hover state |
+| `brand` | `#950101` | Brand red — surfaces, borders, accents |
+| `brand-soft` | `#950101` | Brand red for small text and icons |
+| `accent` | `#D90000` | Primary CTA |
+| `on-accent` | `#FFFFFF` | Text on a brand or accent fill |
+| `heading` | `#1A0000` | Headings |
+| `body` | `#2B2020` | Body text |
+| `muted` | `#685B5B` | Secondary text |
+| `border` | `rgba(61,0,0,.16)` | Hairlines and card borders |
+| `focus` | `#950101` | Focus rings |
+| `error` | `#B00020` | Form validation messages |
 
-Use these in components as ordinary Tailwind utilities — `bg-surface`, `text-muted`, `border-border` — **never a raw hex value**, or that element will not respond to the theme.
+Use these as ordinary Tailwind utilities in components — **never a raw hex value**.
 
-`brand-soft` is the red used for small text and icons. It flips to the darker `#950101` in light mode, because a pale red is unreadable on a light background.
+`brand` and `brand-soft` currently share a value but are kept separate: `brand` is for surfaces and borders, `brand-soft` for small text and icons. Keeping them distinct means either can be tuned without disturbing the other.
 
-**Contrast (WCAG AA):** white on `#D90000` 5.1:1 · body on page 14.4:1 · muted on page 5.8:1 · muted on alt sections 5.3:1 · brand-soft on page 9.6:1.
+**Contrast (WCAG AA):** white on `#D90000` 5.1:1 · body on page 14.4:1 · muted on page 5.8:1 · muted on alternate sections 5.3:1 · brand red small text on page 9.6:1.
 
 ### Changing a colour
 
-Edit the value in the matching `[data-theme]` block in `src/index.css`. Do not change the dark column — it is the locked brand palette.
+Edit the value in `@theme` (or `:root` for a `--ui-*` token) in `src/index.css`. It propagates everywhere. Re-check contrast before shipping a change to a text or CTA colour.
 
-### Persistence and the default
+### The loading screen
 
-- The choice is saved to `localStorage` under **`danial-oza-theme`**. That is the only thing this site stores.
-- On first visit with no saved choice, the site follows the operating system's `prefers-color-scheme`, and falls back to **dark** if that cannot be determined.
-- To change the fallback, edit `DEFAULT_THEME` in [`src/context/themeContextValue.js`](src/context/themeContextValue.js) **and** the matching fallback in the inline script in [`index.html`](index.html) — they must agree.
-
-### No flash on load
-
-A small blocking script in the `<head>` of `index.html` applies `data-theme` before the page paints, so a dark-theme visitor never sees a white flash. It mirrors the logic in `themeContextValue.js`; if you change one, change both.
+The 2000ms intro loader uses the same light palette, so there is no dark moment before the page appears. Its gradient is the `.intro-overlay` rule in `src/index.css`.
 
 ---
 
@@ -303,7 +288,7 @@ The questionnaire collects **no** medical details, exact income, bank balances, 
 
 **Bright red (`accent`) is deliberately restricted** to primary buttons, the questionnaire progress bar, key statistics, and active states. Small red text uses the `brand-soft` token instead, because pure red is not readable at small sizes. If you widen the use of `accent`, re-check contrast in **both** themes first.
 
-See [Light and dark themes](#light-and-dark-themes) for the full token list.
+See [The theme](#the-theme) for the full token list.
 
 ---
 
