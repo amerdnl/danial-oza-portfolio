@@ -30,7 +30,10 @@ export function Navbar() {
   const toggleRef = useRef(null)
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 60)
+    const onScroll = () => {
+      const nextScrolled = window.scrollY > 60
+      setScrolled((current) => (current === nextScrolled ? current : nextScrolled))
+    }
     onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
@@ -50,9 +53,9 @@ export function Navbar() {
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${
+      className={`fixed inset-x-0 top-0 z-30 transition-colors duration-200 ${
         scrolled || menuOpen
-          ? 'bg-overlay-strong border-b border-border backdrop-blur-md'
+          ? 'bg-overlay-strong border-b border-border xl:backdrop-blur-md'
           : 'border-b border-transparent'
       }`}
     >
@@ -101,7 +104,7 @@ export function Navbar() {
             type="button"
             onClick={() => setMenuOpen((open) => !open)}
             aria-expanded={menuOpen}
-            aria-controls="mobile-menu"
+            aria-controls={menuOpen ? 'mobile-menu' : undefined}
             aria-label={menuOpen ? t(nav.closeMenu) : t(nav.openMenu)}
             className="inline-flex size-11 items-center justify-center rounded-lg border border-border text-heading transition-colors hover:bg-hover-tint xl:hidden"
           >

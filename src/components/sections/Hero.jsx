@@ -44,7 +44,7 @@ export function Hero() {
       {/* Decorative glow — purely visual, hidden from assistive tech. */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -right-40 -top-40 size-[36rem] rounded-full bg-brand opacity-20 blur-[120px]"
+        className="hero-glow pointer-events-none absolute -right-24 -top-24 size-[20rem] rounded-full md:-right-40 md:-top-40 md:size-[36rem]"
       />
 
       <div className="container-page relative pb-16 pt-32 sm:pb-20 sm:pt-36 lg:pb-28 lg:pt-40">

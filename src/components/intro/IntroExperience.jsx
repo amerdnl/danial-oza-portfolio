@@ -50,7 +50,7 @@ export function IntroExperience({ state, progress, isBlocking }) {
           tint on the light background rather than a smudge. */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute left-1/2 top-1/2 size-[42rem] max-w-[140vw] -translate-x-1/2 -translate-y-1/2 rounded-full bg-brand opacity-[0.07] blur-[130px]"
+        className="intro-glow pointer-events-none absolute left-1/2 top-1/2 size-[30rem] max-w-[140vw] -translate-x-1/2 -translate-y-1/2 rounded-full md:size-[42rem]"
       />
 
       <div className="relative flex w-full items-center justify-center">
